@@ -1,0 +1,25 @@
+{
+  "name": "mega-hybrid-cache",
+  "version": "1.0.0",
+  "description": "LRU cache, file cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megaads-vn/hybrid-cache.git"
+  },
+  "keywords": [
+    "LRU",
+    "cache",
+    "file",
+    "cache"
+  ],
+  "author": "Mega Technical Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/megaads-vn/hybrid-cache/issues"
+  },
+  "homepage": "https://github.com/megaads-vn/hybrid-cache#readme"
+}
