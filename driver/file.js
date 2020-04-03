@@ -50,9 +50,9 @@ class FileManager {
         let filePath = this.filePath(key);
         fs.writeFile(filePath, value, function (err) {
             if (err) {
-                return console.log(err);
+                return Util.log(err);
             }
-            console.log(key + " was saved!");
+            Util.log(key + " was saved!");
         });
         this.setNode(key, value, maxAge);
     }
@@ -73,7 +73,7 @@ class FileManager {
         if (isExists) {
             fs.unlink(filePath, (err) => {
                 if (err) throw err;
-                console.log(key + ' was deleted');
+                Util.log(key + ' was deleted');
             });
         }
     }
@@ -88,10 +88,10 @@ class FileManager {
         let filePath = this.filePath(label) + '*';
         exec("rm -f " + filePath, (error, stdout, stderr) => {
             if (error) {
-                console.error(`delTag ${label} exec error: ${error}`);
+                Util.error(`delTag ${label} exec error: ${error}`);
                 return;
             }
-            console.log(`delTag ${label} success`);
+            Util.log(`delTag ${label} success`);
         });
     }
 

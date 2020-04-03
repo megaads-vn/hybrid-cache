@@ -18,10 +18,7 @@ class HyBridCache {
         this.maxAge = options.maxAge * 1000 || 24 * 60 * 60 * 1000;
         this.fileCache = new File(options);
         this.lruCache = new LRU(options);
-        let debug = options.debug || false;
-        if (!debug) {
-            console.log = function() {}
-        }
+
     }
 
 
