@@ -14,11 +14,14 @@ class HyBridCache {
         }
         //options.limit (mb)
         this.limit = options.limit * 1024 * 1024 || 1 * 1024 * 1024 * 1024;
-        //this.maxLengthPerItem = options.maxLengthPerItem || 1 * 1024 * 1024;
         //default 24h
-        this.maxAge = options.maxAge || 24 * 60 * 60 * 1000;
+        this.maxAge = options.maxAge * 1000 || 24 * 60 * 60 * 1000;
         this.fileCache = new File(options);
         this.lruCache = new LRU(options);
+        let debug = options.debug || false;
+        if (!debug) {
+            console.log = function() {}
+        }
     }
 
 
@@ -46,8 +49,8 @@ class HyBridCache {
     }
 
     forget(key) {
-        this.lruCache.del(key, value, maxAge);
-        this.fileCache.del(key, value, maxAge);
+        this.lruCache.del(key);
+        this.fileCache.del(key);
     }
 
     tags(tags) {
