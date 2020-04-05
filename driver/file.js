@@ -48,6 +48,9 @@ class FileManager {
     //maxAge is ms
     set(key, value, maxAge) {
         let filePath = this.filePath(key);
+        if (value && typeof value == 'object') {
+            value = JSON.stringify(value);
+        }
         fs.writeFile(filePath, value, function (err) {
             if (err) {
                 return Util.log(err);
@@ -63,8 +66,20 @@ class FileManager {
         if (this.has(key)) {
             let filePath = this.filePath(key);
             retVal = fs.readFileSync(filePath, 'utf8');
+            retVal = this.decode(retVal);
         }
         return retVal;
+    }
+
+    decode(value) {
+        if (value && value.charAt(0) == '{') {
+            try {
+                value = JSON.parse(value)
+            }catch (e) {
+                console.log('decode err', e, ' value: ', value);
+            }
+        }
+        return value;
     }
 
     del(key) {
