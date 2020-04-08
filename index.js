@@ -12,17 +12,23 @@ class HyBridCache {
         if (!options) {
             options = {}
         }
-        //options.limit (mb)
-        this.limit = options.limit * 1024 * 1024 || 1 * 1024 * 1024 * 1024;
         //default 24h
-        this.maxAge = options.maxAge * 1000 || 24 * 60 * 60 * 1000;
+        this.maxAge = options.maxAge || 24 * 60 * 60 ;
+        this.maxAge *=  1000;
+        options.maxAge = this.maxAge;
+        //options.limit (mb)
+        options.limit = options.limit || 1024;
+        options.limit *= 1024 * 1024;
         this.fileCache = new File(options);
         this.lruCache = new LRU(options);
         this.data = new Map();
     }
 
-    keys() {
-        return this.data.keys();
+    keys(pattern) {
+        if (!pattern) {
+            return this.data.keys();
+        }
+        return Util.keyByPattern(this, pattern);
     }
 
     setNode(key, value, maxAge) {
@@ -45,10 +51,13 @@ class HyBridCache {
     get(key) {
         let retVal = this.lruCache.get(key);
         if (!retVal) {
+            Util.log('file')
             retVal = this.fileCache.get(key);
             if (retVal) {
                 this.setAge(key, retVal);
             }
+        } else {
+            Util.log('ram');
         }
         return retVal;
     }

@@ -9,10 +9,7 @@ class LRUCache {
         if (!options) {
             options = {}
         }
-        //options.limit (mb)
-        this.limit = options.limit * 1024 * 1024 || 1 * 1024 * 1024 * 1024;
-        //this.maxLengthPerItem = options.maxLengthPerItem || 1 * 1024 * 1024;
-        //default 24h
+        this.limit = options.limit || 1024 * 1024 * 1024;
         this.maxAge = options.maxAge || 24 * 60 * 60 * 1000;
         this.reset()
     }
@@ -29,8 +26,11 @@ class LRUCache {
         return this.itemCount
     }
 
-    keys() {
-        return this.data.keys()
+    keys(pattern) {
+        if (!pattern) {
+            return this.data.keys();
+        }
+        return Util.keyByPattern(this, pattern);
     }
 
     values() {
@@ -98,7 +98,6 @@ class LRUCache {
 
     delTag(tag) {
         Util.delTag(this, tag);
-
     }
 
 

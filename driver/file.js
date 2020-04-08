@@ -21,8 +21,11 @@ class FileManager {
         this.data = new Map();
     }
 
-    keys() {
-        return this.data.keys();
+    keys(pattern) {
+        if (!pattern) {
+            return this.data.keys();
+        }
+        return Util.keyByPattern(this, pattern);
     }
 
     has(key) {
@@ -45,6 +48,7 @@ class FileManager {
         const node = new Node(key, maxAge);
         this.data.set(node.key, node);
     }
+
     //maxAge is ms
     set(key, value, maxAge) {
         let filePath = this.filePath(key);
@@ -76,7 +80,7 @@ class FileManager {
             try {
                 value = JSON.parse(value)
             }catch (e) {
-                console.log('decode err', e, ' value: ', value);
+                Util.log('decode err', e, ' value: ', value);
             }
         }
         return value;
@@ -92,7 +96,6 @@ class FileManager {
             });
         }
     }
-
 
     delTag(tag) {
         Util.delTag(this, tag);
