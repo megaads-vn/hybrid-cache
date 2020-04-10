@@ -43,11 +43,11 @@ class LRUCache {
         return !isStale(this, node)
     }
 
-    set(key, value, maxAge) {
-        maxAge = maxAge || this.maxAge;
+    set(key, value, maxAge = 1000) {
         if (maxAge && typeof maxAge !== 'number') {
             throw new TypeError('maxAge must be a number')
         }
+        maxAge *= 1000;
         const now = Date.now();
         const vLength = value.length;
         const node = new Node(key, value, vLength, now, maxAge);

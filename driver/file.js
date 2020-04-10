@@ -49,8 +49,11 @@ class FileManager {
         this.data.set(node.key, node);
     }
 
-    //maxAge is ms
-    set(key, value, maxAge) {
+    set(key, value, maxAge = 1000) {
+        if (maxAge && typeof maxAge !== 'number') {
+            throw new TypeError('maxAge must be a number')
+        }
+        maxAge *= 1000;
         let filePath = this.filePath(key);
         if (value && typeof value == 'object') {
             value = JSON.stringify(value);
