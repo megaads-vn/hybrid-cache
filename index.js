@@ -1,7 +1,7 @@
 global.__dirHybridCache = __dirname;
 const File = require(__dirHybridCache + '/driver/file');
 const LRU = require(__dirHybridCache + '/driver/lru');
-const TagManager = (__dirHybridCache + '/lib/tag');
+const TagManager = require(__dirHybridCache + '/lib/tag');
 const Util = require(__dirHybridCache + '/lib/util.js');
 class HyBridCache {
     constructor(options) {
@@ -93,6 +93,7 @@ class HyBridCache {
     flush() {
         this.lruCache.flush();
         this.fileCache.flush();
+        this.data = new Map();
     }
 
 
