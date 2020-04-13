@@ -142,6 +142,15 @@ class FileManager {
         return this.path + key;
     }
 
+    setOptions(options) {
+        if (!options) {
+            options = {}
+        }
+        if (options.path) {
+            this.path = options.path;
+        }
+    }
+
 }
 
 const isStale = (self, node, stats) => {

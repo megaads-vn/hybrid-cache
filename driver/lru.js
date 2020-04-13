@@ -128,6 +128,18 @@ class LRUCache {
         return true;
     }
 
+    setOptions(options) {
+        if (!options) {
+            options = {}
+        }
+        if (options.limit) {
+            this.limit = options.limit;
+        }
+        if (options.maxAge) {
+            this.maxAge = options.maxAge;
+        }
+    }
+
 
 }
 

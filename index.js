@@ -3,7 +3,7 @@ const File = require(__dirHybridCache + '/driver/file');
 const LRU = require(__dirHybridCache + '/driver/lru');
 const TagManager = require(__dirHybridCache + '/lib/tag');
 const Util = require(__dirHybridCache + '/lib/util.js');
-class HyBridCache {
+class HybridCache {
     constructor(options) {
         if (typeof options === 'number') {
             options = {limit: options}
@@ -96,6 +96,21 @@ class HyBridCache {
         this.data = new Map();
     }
 
+    setOptions(options) {
+        if (!options) {
+            options = {}
+        }
+        if (options.limit) {
+            options.limit *= 1024 * 1024;
+        }
+        if (options.maxAge) {
+            this.maxAge = options.maxAge;
+            this.maxAge *=  1000;
+            options.maxAge = this.maxAge;
+        }
+        this.lruCache.setOptions(options);
+        this.fileCache.setOptions(options);
+    }
 
 }
 
@@ -106,7 +121,8 @@ class Node {
         this.maxAge = maxAge || 0;
     }
 }
-module.exports = HyBridCache;
+
+module.exports = HybridCache;
 
 
 
