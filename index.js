@@ -1,8 +1,8 @@
-global.__dir = __dirname;
-const File = require(__dirname + '/driver/file');
-const LRU = require(__dirname + '/driver/lru');
-const TagManager = require(__dirname + '/lib/tag');
-const Util = require(__dir + '/lib/util.js');
+global.__dirHybridCache = __dirname;
+const File = require(__dirHybridCache + '/driver/file');
+const LRU = require(__dirHybridCache + '/driver/lru');
+const TagManager = (__dirHybridCache + '/lib/tag');
+const Util = require(__dirHybridCache + '/lib/util.js');
 class HyBridCache {
     constructor(options) {
         if (typeof options === 'number') {
@@ -51,13 +51,13 @@ class HyBridCache {
     get(key) {
         let retVal = this.lruCache.get(key);
         if (!retVal) {
-            Util.log('file')
+            Util.log('file:', key)
             retVal = this.fileCache.get(key);
             if (retVal) {
                 this.setAge(key, retVal);
             }
         } else {
-            Util.log('ram');
+            Util.log('ram:', key);
         }
         return retVal;
     }
@@ -88,6 +88,11 @@ class HyBridCache {
             this.setNode(key, value, maxAge);
         }
         this.lruCache.set(key, value, maxAge);
+    }
+
+    flush() {
+        this.lruCache.flush();
+        this.fileCache.flush();
     }
 
 

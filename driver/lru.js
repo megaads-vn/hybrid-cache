@@ -1,4 +1,4 @@
-const Util = require(__dir + '/lib/util.js')
+const Util = require(__dirHybridCache + '/lib/util.js')
 
 class LRUCache {
     constructor(options) {
@@ -100,6 +100,10 @@ class LRUCache {
         Util.delTag(this, tag);
     }
 
+    flush() {
+        this.reset();
+    }
+
 
     moveHead(node) {
         node.next = this.head;
@@ -123,7 +127,6 @@ class LRUCache {
         }
         return true;
     }
-
 
 
 }

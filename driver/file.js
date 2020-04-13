@@ -1,6 +1,6 @@
 const fs = require('fs');
 const {exec} = require('child_process');
-const Util = require(__dir + '/lib/util.js');
+const Util = require(__dirHybridCache + '/lib/util.js');
 
 class FileManager {
     constructor(options) {
@@ -12,7 +12,7 @@ class FileManager {
         }
         //default 24h
         this.maxAge = options.maxAge || 24 * 60 * 60 * 1000;
-        this.path = options.path || __dir + '/resource/cache/';
+        this.path = options.path || __dirHybridCache + '/resource/cache/';
         this.fs = fs;
         this.reset()
     }
@@ -67,13 +67,22 @@ class FileManager {
         this.setNode(key, value, maxAge);
     }
 
-
     get(key) {
         let retVal = undefined;
         if (this.has(key)) {
             let filePath = this.filePath(key);
-            retVal = fs.readFileSync(filePath, 'utf8');
+            retVal = this.readFile(filePath)
             retVal = this.decode(retVal);
+        }
+        return retVal;
+    }
+
+    readFile(filePath) {
+        let retVal;
+        try {
+            retVal = fs.readFileSync(filePath, 'utf8');
+        } catch (e) {
+            retVal = undefined;
         }
         return retVal;
     }
@@ -82,7 +91,7 @@ class FileManager {
         if (value && value.charAt(0) == '{') {
             try {
                 value = JSON.parse(value)
-            }catch (e) {
+            } catch (e) {
                 Util.log('decode err', e, ' value: ', value);
             }
         }
@@ -107,12 +116,22 @@ class FileManager {
 
     delFileFromTag(label) {
         let filePath = this.filePath(label) + '*';
+        this.removePath(filePath)
+    }
+
+    flush() {
+        this.reset();
+        let filePath = this.path + '*';
+        this.removePath(filePath);
+    }
+
+    removePath(filePath) {
         exec("rm -f " + filePath, (error, stdout, stderr) => {
             if (error) {
-                Util.error(`delTag ${label} exec error: ${error}`);
+                Util.error(`removePath: ${filePath} exec error: ${error}`);
                 return;
             }
-            Util.log(`delTag ${label} success`);
+            Util.log(`removePath ${filePath} success`);
         });
     }
 
