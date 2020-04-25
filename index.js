@@ -38,6 +38,9 @@ class HybridCache {
 
 
     set(key, value, maxAge) {
+        if (maxAge && typeof maxAge !== 'number') {
+            throw new TypeError('maxAge must be a number')
+        }
         maxAge *= 1000;
         this.lruCache.set(key, value, maxAge);
         this.fileCache.set(key, value, maxAge);
@@ -51,7 +54,7 @@ class HybridCache {
     get(key) {
         let retVal = this.lruCache.get(key);
         if (!retVal) {
-            Util.log('file:', key)
+            Util.log('file:', key);
             retVal = this.fileCache.get(key);
             if (retVal) {
                 this.setAge(key, retVal);
@@ -83,11 +86,10 @@ class HybridCache {
 
     setAge(key, value) {
         let node = this.data.get(key);
-        let maxAge = node ? node.maxAge - node.createdAt : this.maxAge;
         if (!node) {
-            this.setNode(key, value, maxAge);
+            this.setNode(key, value, this.maxAge);
         }
-        this.lruCache.set(key, value, maxAge);
+        this.lruCache.set(key, value, this.maxAge);
     }
 
     flush() {

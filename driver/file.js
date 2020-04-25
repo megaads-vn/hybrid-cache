@@ -49,11 +49,10 @@ class FileManager {
         this.data.set(node.key, node);
     }
 
-    set(key, value, maxAge = 1000) {
+    set(key, value, maxAge) {
         if (maxAge && typeof maxAge !== 'number') {
             throw new TypeError('maxAge must be a number')
         }
-        maxAge *= 1000;
         let filePath = this.filePath(key);
         if (value && typeof value == 'object') {
             value = JSON.stringify(value);
@@ -168,7 +167,7 @@ class Node {
     constructor(key, maxAge) {
         this.key = key;
         this.createdAt = Date.now();
-        this.maxAge = maxAge || 0;
+        this.maxAge = maxAge;
     }
 }
 
