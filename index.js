@@ -13,7 +13,7 @@ class HybridCache {
             options = {}
         }
         //default 24h
-        this.maxAge = options.maxAge || 24 * 60 * 60 ;
+        this.maxAge = options.maxAge || 1 * 60 * 60 ;
         this.maxAge *=  1000;
         options.maxAge = this.maxAge;
         //options.limit (mb)
@@ -63,6 +63,20 @@ class HybridCache {
             Util.log('ram:', key);
         }
         return retVal;
+    }
+
+    times() {
+        let result = {};
+        let keys = this.data.keys();
+        if (keys) {
+            for (let key of keys) {
+                let node = this.data.get(key);
+                if (node) {
+                    result[key]  = node.createdAt;
+                }
+            }
+        }
+        return result;
     }
 
     delTag(tag) {
