@@ -65,14 +65,17 @@ class HybridCache {
         return retVal;
     }
 
-    times() {
-        let result = {};
+    meta() {
+        let result = [];
         let keys = this.data.keys();
         if (keys) {
             for (let key of keys) {
                 let node = this.data.get(key);
                 if (node) {
-                    result[key]  = node.createdAt;
+                    result.push({
+                        key: node.key,
+                        created_at: node.createdAt
+                    })
                 }
             }
         }
