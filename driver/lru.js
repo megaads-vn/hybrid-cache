@@ -53,11 +53,8 @@ class LRUCache {
         if (this.data.has(key)) {
             this.del(key)
         }
-        if (this.validateLength(vLength)) {
-            this.moveHead(node);
-            return true;
-        }
-        return false;
+        this.moveHead(node);
+        return true;
     }
 
     get(key) {
@@ -117,11 +114,23 @@ class LRUCache {
         this.data.set(node.key, node);
         this.itemCount++;
         this.length += node.length;
+        this.autoResize();
+
     }
 
-    validateLength(vLength) {
-        if (this.length + vLength > this.limit) {
-            Util.log('Error validateLength', this.length + vLength, this.limit);
+    autoResize() {
+        for (let i = 0; i < 30; i++) {
+            if (this.validateLength()) {
+                break;
+            }
+            this.del(this.tail.key);
+        }
+    }
+
+
+    validateLength() {
+        if (this.length > this.limit) {
+            Util.log('Error validateLength', this.length , this.limit);
             return false;
         }
         return true;
