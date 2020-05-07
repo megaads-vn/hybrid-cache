@@ -127,7 +127,7 @@ class FileManager {
     removePath(filePath) {
         exec("rm -f " + filePath, (error, stdout, stderr) => {
             if (error) {
-                Util.error(`removePath: ${filePath} exec error: ${error}`);
+                Util.log(`removePath: ${filePath} exec error: ${error}`);
                 return;
             }
             Util.log(`removePath ${filePath} success`);
