@@ -103,7 +103,7 @@ class FileManager {
         if (isExists) {
             fs.unlink(filePath, (err) => {
                 if (err) {
-                    console.error(err);
+                    console.error(err.toString());
                 }
                 Util.log(key + ' was deleted');
             });
