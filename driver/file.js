@@ -102,7 +102,9 @@ class FileManager {
         let isExists = fs.existsSync(filePath);
         if (isExists) {
             fs.unlink(filePath, (err) => {
-                if (err) throw err;
+                if (err) {
+                    console.error(err);
+                }
                 Util.log(key + ' was deleted');
             });
         }
