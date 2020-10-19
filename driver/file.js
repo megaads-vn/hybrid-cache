@@ -13,8 +13,8 @@ class FileManager {
         //default 24h
         this.maxAge = options.maxAge || 24 * 60 * 60 * 1000;
         this.path = options.path || __dirHybridCache + '/resource/cache/';
-        this.stringify = options.stringify || true;
-        this.encoding = options.encoding || 'utf8';
+        this.stringify = options.stringify !== 'undefined' ? options.stringify : true;
+        this.encoding = options.encoding !== 'undefined' ? options.encoding : 'utf8';
         this.reset()
     }
 
