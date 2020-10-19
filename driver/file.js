@@ -13,7 +13,8 @@ class FileManager {
         //default 24h
         this.maxAge = options.maxAge || 24 * 60 * 60 * 1000;
         this.path = options.path || __dirHybridCache + '/resource/cache/';
-        this.fs = fs;
+        this.stringify = options.stringify || true;
+        this.encoding = options.encoding || 'utf8';
         this.reset()
     }
 
@@ -54,7 +55,7 @@ class FileManager {
             throw new TypeError('maxAge must be a number')
         }
         let filePath = this.filePath(key);
-        if (value && typeof value == 'object') {
+        if (this.stringify && value && typeof value == 'object') {
             value = JSON.stringify(value);
         }
         fs.writeFile(filePath, value, function (err) {
@@ -70,7 +71,7 @@ class FileManager {
         let retVal = undefined;
         if (this.has(key)) {
             let filePath = this.filePath(key);
-            retVal = this.readFile(filePath)
+            retVal = this.readFile(filePath);
             retVal = this.decode(retVal);
         }
         return retVal;
@@ -79,7 +80,7 @@ class FileManager {
     readFile(filePath) {
         let retVal;
         try {
-            retVal = fs.readFileSync(filePath, 'utf8');
+            retVal = fs.readFileSync(filePath, this.encoding);
         } catch (e) {
             retVal = undefined;
         }
@@ -87,7 +88,7 @@ class FileManager {
     }
 
     decode(value) {
-        if (value && value.charAt(0) == '{') {
+        if (this.stringify && value && value.charAt(0) == '{') {
             try {
                 value = JSON.parse(value)
             } catch (e) {
