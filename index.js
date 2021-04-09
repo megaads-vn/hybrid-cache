@@ -82,6 +82,10 @@ class HybridCache {
         return result;
     }
 
+    info() {
+        return this.lruCache.info();
+    }
+
     delTag(tag) {
         Util.delTag(this, tag);
         this.fileCache.delFileFromTag(tag);

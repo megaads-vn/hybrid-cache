@@ -148,6 +148,13 @@ class LRUCache {
         }
     }
 
+    info() {
+        return {
+            length: this.length,
+            count: this.itemCount,
+        }
+    }
+
 
 }
 
