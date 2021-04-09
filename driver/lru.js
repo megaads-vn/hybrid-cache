@@ -54,6 +54,9 @@ class LRUCache {
             this.del(key)
         }
         this.moveHead(node);
+        this.itemCount++;
+        this.length += node.length;
+        this.autoResize();
         return true;
     }
 
@@ -112,9 +115,6 @@ class LRUCache {
         }
         this.head = node;
         this.data.set(node.key, node);
-        this.itemCount++;
-        this.length += node.length;
-        this.autoResize();
 
     }
 
