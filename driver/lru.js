@@ -77,20 +77,22 @@ class LRUCache {
     del(key) {
         let node = this.data.get(key);
         if (node) {
+            this.length -= node.length;
+            this.itemCount--;
+            this.data.delete(key);
             if (node.prev !== null) {
                 node.prev.next = node.next;
             } else {
+                this.head.next.prev = null;
                 this.head = node.next;
             }
 
             if (node.next !== null) {
                 node.next.prev = node.prev;
             } else {
+                this.tail.prev.next = null;
                 this.tail = node.prev;
             }
-            this.length -= node.length;
-            this.itemCount--;
-            this.data.delete(key);
         }
 
     }
@@ -119,10 +121,10 @@ class LRUCache {
     }
 
     autoResize() {
+        if (this.validateLength()) {
+            return;
+        }
         for (let i = 0; i < 30; i++) {
-            if (this.validateLength()) {
-                break;
-            }
             this.del(this.tail.key);
         }
     }
@@ -130,7 +132,7 @@ class LRUCache {
 
     validateLength() {
         if (this.length > this.limit) {
-            Util.log('Error validateLength', this.length , this.limit);
+            console.log('Error validateLength', this.length , this.limit);
             return false;
         }
         return true;

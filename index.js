@@ -124,6 +124,10 @@ class HybridCache {
         this.data = new Map();
     }
 
+    flushMemory() {
+        this.lruCache.flush();
+    }
+
     setOptions(options) {
         if (!options) {
             options = {}
