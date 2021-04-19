@@ -63,8 +63,9 @@ class LRUCache {
     get(key) {
         let node = this.data.get(key);
         if (node) {
+            this.del(key);
             if (isStale(this, node)) {
-                this.del(key);
+                return undefined
             } else {
                 this.moveHead(node);
                 return node.value;
