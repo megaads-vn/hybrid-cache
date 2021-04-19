@@ -9,8 +9,8 @@ class LRUCache {
         if (!options) {
             options = {}
         }
-        this.limit = options.limit || 1024 * 1024 * 1024;
-        this.maxAge = options.maxAge || 24 * 60 * 60 * 1000;
+        this.limit = options.limit ? options.limit : 512 * 1024 * 1024;
+        this.maxAge = options.maxAge ? options.maxAge : 24 * 60 * 60 * 1000;
         this.reset()
     }
 
@@ -152,6 +152,7 @@ class LRUCache {
         return {
             length: this.length,
             count: this.itemCount,
+            limit: this.limit,
         }
     }
 

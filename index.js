@@ -13,11 +13,11 @@ class HybridCache {
             options = {}
         }
         //default 24h
-        this.maxAge = options.maxAge || 1 * 60 * 60 ;
+        this.maxAge = options.maxAge ? options.maxAge : 24 * 60 ;
         this.maxAge *=  1000;
         options.maxAge = this.maxAge;
         //options.limit (mb)
-        options.limit = options.limit || 1024;
+        options.limit = options.limit ? options.limit : 1024;
         options.limit *= 1024 * 1024;
         this.fileCache = new File(options);
         this.lruCache = new LRU(options);
@@ -84,6 +84,10 @@ class HybridCache {
 
     info() {
         return this.lruCache.info();
+    }
+
+    resize() {
+        return this.lruCache.autoResize();
     }
 
     delTag(tag) {
