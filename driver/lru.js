@@ -50,12 +50,8 @@ class LRUCache {
         const now = Date.now();
         const vLength = value.length;
         const node = new Node(key, value, vLength, now, maxAge);
-        if (this.data.has(key)) {
-            this.del(key)
-        }
+        this.del(key);
         this.moveHead(node);
-        this.itemCount++;
-        this.length += node.length;
         this.autoResize();
         return true;
     }
@@ -84,14 +80,11 @@ class LRUCache {
             if (node.prev !== null) {
                 node.prev.next = node.next;
             } else {
-                this.head.next.prev = null;
                 this.head = node.next;
             }
-
             if (node.next !== null) {
                 node.next.prev = node.prev;
             } else {
-                this.tail.prev.next = null;
                 this.tail = node.prev;
             }
         }
@@ -117,6 +110,8 @@ class LRUCache {
             this.tail = node;
         }
         this.head = node;
+        this.itemCount++;
+        this.length += node.length;
         this.data.set(node.key, node);
 
     }
