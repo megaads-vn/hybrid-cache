@@ -153,8 +153,8 @@ class LRUCache {
             length: this.length,
             count: this.itemCount,
             limit: this.limit,
-            tail: this.tail,
-            head: this.head,
+            tail: this.tail ? this.tail.key : null,
+            head: this.head ? this.head.key : null,
         }
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "mega-hybrid-cache",
-  "version": "1.0.24",
+  "version": "1.0.26",
   "description": "LRU cache, file cache",
   "main": "index.js",
   "scripts": {
