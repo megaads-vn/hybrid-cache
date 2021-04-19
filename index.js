@@ -22,6 +22,7 @@ class HybridCache {
         this.fileCache = new File(options);
         this.lruCache = new LRU(options);
         this.data = new Map();
+        global.__debug = options.debug ? options.debug : false;
     }
 
     keys(pattern) {
